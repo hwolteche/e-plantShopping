@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css';
 import CartItem from './CartItem';
-import addItem from './CartSlice';
+import { addItem, removeItem, updateQuantity } from './CartSlice';
 import { useSelector, useDispatch } from "react-redux";
 
 function ProductList({ onHomeClick }) {
@@ -267,6 +267,7 @@ function ProductList({ onHomeClick }) {
            [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
          }));
     };
+
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -291,7 +292,7 @@ function ProductList({ onHomeClick }) {
                 <div className="product-grid">
                     {plantsArray.map((category, index) => (
                         <div className="plants_category" key={index}>
-                            <h1><div className="category">Category: {category.category}</div></h1>
+                            <h1><div className="category">{category.category}</div></h1>
                             <div className="product-list">
                                 {category.plants.map((plant, plantIndex) => (
                                     <div className='product-card' key={plantIndex}>
@@ -299,7 +300,11 @@ function ProductList({ onHomeClick }) {
                                         <div className="product-title">{plant.name} </div>
                                         <div className="product-description">{plant.description} </div>
                                         <div className="product-price">{plant.cost} </div>
+                                        {!addedToCart[plant.name] ? (
                                         <button  className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                                        ) : (
+                                            <button  className="product-button.added-to-cart">Added to Cart</button>
+                                        )}
                                     </div>
                                 ))}
                             </div>
